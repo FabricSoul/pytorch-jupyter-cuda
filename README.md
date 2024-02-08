@@ -4,10 +4,12 @@ This Dockerfile creates a Docker image equipped with NVIDIA CUDA, Python, pip, P
 
 ## Environment Variables
 
-When running the Docker container, you must set two environment variables for Jupyter Lab access:
+Setting environment variables for Jupyter Lab access is optional. If you prefer to secure your Jupyter Lab instance, you can set the following environment variables:
 
 - `JUPYTER_TOKEN`: The token used for Jupyter Lab authentication.
 - `JUPYTER_PASSWORD`: The password used for Jupyter Lab authentication.
+
+If you do not set these variables, Jupyter Lab will be accessible without authentication.
 
 ## Volume
 
@@ -25,17 +27,17 @@ docker build -t my_cuda_jupyter_image .
 
 ### Running the Docker Container
 
-To run the Docker container with the necessary port mappings, volume mount, and environment variables, use:
+To run the Docker container with the necessary port mappings, volume mount, and optional environment variables for Jupyter Lab access, use:
 
 ```bash
 docker run --gpus all -it -p 8888:8888 \
   -v /path/to/your/app:/app \
-  -e JUPYTER_TOKEN=your_token \
-  -e JUPYTER_PASSWORD=your_password \
+  [-e JUPYTER_TOKEN=your_token] \
+  [-e JUPYTER_PASSWORD=your_password] \
   my_cuda_jupyter_image
 ```
 
-Ensure you replace `/path/to/your/app`, `your_token`, and `your_password` with the actual path to your application directory on your host, and your desired Jupyter token and password, respectively.
+Replace `/path/to/your/app` with the actual path to your application directory on your host. The `JUPYTER_TOKEN` and `JUPYTER_PASSWORD` environment variables are optional; include them only if you wish to set a token and password for Jupyter Lab access.
 
 ## Using Docker Compose
 
@@ -51,15 +53,15 @@ services:
     volumes:
       - "/path/to/your/app:/app"
     environment:
-      - JUPYTER_TOKEN=your_token
-      - JUPYTER_PASSWORD=your_password
+      - JUPYTER_TOKEN=your_optional_token
+      - JUPYTER_PASSWORD=your_optional_password
+      - NVIDIA_VISIBLE_DEVICES=all
 ```
 
-Replace `/path/to/your/app`, `your_token`, and `your_password` in the `docker-compose.yml` file with your actual application path, Jupyter token, and Jupyter password, respectively.
+In the `docker-compose.yml` file, setting `JUPYTER_TOKEN` and `JUPYTER_PASSWORD` is optional. Remove or comment out these lines if you prefer not to use a token or password for Jupyter Lab access. Replace `/path/to/your/app` with your actual application path.
 
 To start the container using Docker Compose, run:
 
 ```bash
-docker-compose up --gpus all
+docker-compose up
 ```
-
