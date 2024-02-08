@@ -29,5 +29,5 @@ jobs:
         with:
           push: true
           tags: |
-            yourusername/yourimagename:${{ steps.extract_tag.outputs.tag }}
-            yourusername/yourimagename:latest
+            fabricsoul/pytorch-jupyter-cuda:${{ steps.extract_tag.outputs.tag }}
+            fabricsoul/pytorch-jupyter-cuda:latest
