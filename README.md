@@ -28,7 +28,7 @@ docker build -t my_cuda_jupyter_image .
 To run the Docker container with the necessary port mappings, volume mount, and environment variables, use:
 
 ```bash
-docker run -it -p 8888:8888 \
+docker run --gpus all -it -p 8888:8888 \
   -v /path/to/your/app:/app \
   -e JUPYTER_TOKEN=your_token \
   -e JUPYTER_PASSWORD=your_password \
@@ -42,14 +42,14 @@ Ensure you replace `/path/to/your/app`, `your_token`, and `your_password` with t
 For convenience, you can also use Docker Compose to manage the container. Below is a sample `docker-compose.yml` file configuration:
 
 ```yaml
-version: '3'
+version: '3.8'
 services:
-  jupyter:
+  jupyterlab:
     build: .
     ports:
       - "8888:8888"
     volumes:
-      - /path/to/your/app:/app
+      - "/path/to/your/app:/app"
     environment:
       - JUPYTER_TOKEN=your_token
       - JUPYTER_PASSWORD=your_password
@@ -60,6 +60,6 @@ Replace `/path/to/your/app`, `your_token`, and `your_password` in the `docker-co
 To start the container using Docker Compose, run:
 
 ```bash
-docker-compose up
+docker-compose up --gpus all
 ```
 
